@@ -19,7 +19,9 @@ python3 lsb.py --help
 ```
 
 # Example
-I hid Doom and an emulator for running it in a picture of my dog:
+This picture of my dog is hiding Doom and an emulator for running it: https://drive.google.com/file/d/1ASs0Ww9uT7LCRYfwDVB8SDaoiNlB0Wn9/view?usp=sharing
+
+Comparison:
 
 ![Doom hidden in picture of my dog](https://i.imgur.com/MHpxk5x.png)
 
