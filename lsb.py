@@ -1,5 +1,6 @@
 import argparse
 import cv2
+import math
 import numpy as np
 
 IO_HIDE = 'hide'
@@ -30,26 +31,29 @@ def hide(image_path, payload_path, output_filename):
     print('Reading...')
     img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
     f = open(payload_path, 'rb')
-    bytes = list(f.read())
+    payload = list(f.read())
     print('Preparing payload...')
-    if len(bytes)*4 > img.size:
+    if len(payload)*4+4 > img.size:
         raise Exception('Image dimensions are too small for payload')
-    payload = []
-    for b in bytes:
-        payload += [b>>6, b>>4, b>>2, b]
-    payload += [0b11111111] * (img.size-len(payload)) # these filler bytes can be anything
-    payload = np.asarray(payload, dtype=np.uint8)
-    payload = np.reshape(payload, img.shape)
+    # First 4 bytes in steg image always say how many bytes are in the payload
+    payload_size = len(payload).to_bytes(4, 'little')
+    payload = list(payload_size) + payload
+    formatted_payload = []
+    for b in payload:
+        formatted_payload += [b>>6, b>>4, b>>2, b]
+    formatted_payload += [0b11111111] * (img.size-len(formatted_payload)) # these filler bytes can be anything
+    formatted_payload = np.asarray(formatted_payload, dtype=np.uint8)
+    formatted_payload = np.reshape(formatted_payload, img.shape)
     print('Preparing bitwise mask...')
-    mask = [0b00000011] * len(bytes) * 4
+    mask = [0b00000011] * len(payload) * 4
     mask += [0b00000000] * (img.size-len(mask))
     mask = np.asarray(mask, dtype=np.uint8)
     mask = np.reshape(mask, img.shape)
     print('Replacing least significant bits...')
-    res = np.bitwise_xor(img, payload)
+    res = np.bitwise_xor(img, formatted_payload)
     res = np.bitwise_and(res, mask)
     res = np.bitwise_xor(res, img)
-    print('Writing...')
+    print('Compressing and writing...')
     if not output_filename.lower().endswith('.png'):
         output_filename += '.png'
     cv2.imwrite(output_filename, res, [cv2.IMWRITE_PNG_COMPRESSION, 9])
@@ -63,10 +67,12 @@ def extract(image_path, output_filename):
     img = np.bitwise_or.reduce(img, axis=2)
     print('Reshaping...')
     img = np.reshape(img, img.size)
-    img = bytearray(img)
+    # First 4 bytes in steg image always say how many bytes are in the payload
+    payload_size = int.from_bytes(list(img[:4]), 'little')
+    payload = bytearray(img[4:payload_size+4])
     print('Writing...')
     f = open(output_filename, 'wb')
-    f.write(img)
+    f.write(payload)
 
 if __name__ == '__main__':
     main()
