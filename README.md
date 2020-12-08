@@ -1,6 +1,6 @@
-# LSB-Steganography
+# What is this?
 
-Hides and extracts arbitrary payloads in PNG images using **L**east **S**ignificant **B**it (LSB) steganography.
+Hides and extracts arbitrary payloads in PNG images without adding any additional data using **L**east **S**ignificant **B**it (LSB) steganography.
 
 Steganography is the practice of hiding information within plain sight via another piece of information so that the existence of a secret payload is unknown or at least plausibly deniable. It's used for [international espionage](https://www.wired.com/2010/06/alleged-spies-hid-secret-messages-on-public-websites/), [data exfiltration](https://www.internetandtechnologylaw.com/trade-secrets-theft-steganography-picture/), [malware](https://www.welivesecurity.com/2016/12/06/readers-popular-websites-targeted-stealthy-stegano-exploit-kit-hiding-pixels-malicious-ads/), and [fingerprinting](https://www.businessinsider.nl/genius-accuses-google-of-copying-its-lyrics-and-diverting-traffic-2019-6?international=true&r=US)- pretty cool!
 
@@ -31,11 +31,11 @@ Comparison:
 
 ![Doom hidden in picture of my dog](https://i.imgur.com/MHpxk5x.png)
 
+# LSB caveats
+* Won't work with lossy compression (like JPEG)
+* Large payloads make PNG compression ineffective, so the compressed result image will most likely be larger than the compresed original
+* Easily detectable even without original image
+
 # TODO
 * Hide can be faster
-* The extracted payload will usually have garbage data appended to it which is unnecessary
-
-# LSB Caveats
-* Won't work with lossy compression (like JPEG)
-* Makes PNG compression ineffective, so the result image will most likely be larger than the original
-* Easily detectable even without source image
+* ~~The extracted payload will usually have garbage data appended to it which is unnecessary~~
