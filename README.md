@@ -18,14 +18,14 @@ pip install -r requirements.txt
 python3 lsb.py hide sunset.png launchcodes.txt -o steg.png
 
 # Extract a payload from an image
-python3 lsb.py extract steg.png -o codes.txt
+python3 lsb.py extract steg.png -o thelaunchcodes.txt
 
 # Get full CLI documentation
 python3 lsb.py --help
 ```
 
 # Example
-This picture of my dog is hiding Doom and an emulator for running it: https://drive.google.com/file/d/1ASs0Ww9uT7LCRYfwDVB8SDaoiNlB0Wn9/view?usp=sharing
+This picture of my dog is hiding Doom and an emulator for running it as a .7z file: https://drive.google.com/file/d/1ASs0Ww9uT7LCRYfwDVB8SDaoiNlB0Wn9/view?usp=sharing
 
 Comparison:
 
