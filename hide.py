@@ -28,6 +28,6 @@ res = np.bitwise_and(res, mask)
 res = np.bitwise_xor(res, img)
 
 print('Writing...')
-cv2.imwrite('steg.png', res)
+cv2.imwrite('steg.png', res, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 
 print('Done!')
